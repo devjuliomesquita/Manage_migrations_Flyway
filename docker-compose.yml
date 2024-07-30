@@ -1,0 +1,21 @@
+services:
+  postgres:
+    container_name: postgres_db_flyway
+    image: postgres:15.6
+    environment:
+      POSTGRES_USER: flyway
+      POSTGRES_PASSWORD: flyway
+      POSTGRES_DB: flyway
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+networks:
+  postgres:
+    driver: bridge
+volumes:
+  postgres:

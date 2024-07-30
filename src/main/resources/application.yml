@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: flyway-application
+  datasource:
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/flyway}
+    username: ${DATASOURCE_USERNAME:flyway}
+    password: ${DATASOURCE_PASSWORD:flyway}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+      jakarta: # Scrip para geração de migration
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: update
+              create-target: src/main/resources/db/hibernate/db_create.sql
+              drop-target: src/main/resources/db/hibernate/db_drop.sql
+              update-target: src/main/resources/db/hibernate/db_update.sql
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    baseline-description: "init"
+    baseline-version: 0
+    locations: classpath:db/migration
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+
